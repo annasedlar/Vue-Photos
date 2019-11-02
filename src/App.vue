@@ -1,5 +1,9 @@
 <template>
   <div id="app">
+    <div>
+      <h1>Vue Photo Gallery</h1>
+      <h6>Search for Photos</h6>
+    </div>
     <div class="container">
       <div class="button-wrapper">
         <button class="btn" @click="searchUnsplash('Autumn')">Autumn</button>
