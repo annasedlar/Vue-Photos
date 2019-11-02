@@ -72,6 +72,12 @@ export default {
   margin-top: 60px;
 }
 
+img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
 .container {
   width: 80vw;
   margin: 0 auto;
@@ -87,4 +93,9 @@ export default {
   color: white;
   padding: 10px 20px;
 }
+
+.btn:not(:last-child) {
+  margin-right: 10px;
+}
+
 </style>
