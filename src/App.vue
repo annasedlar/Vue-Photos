@@ -2,11 +2,21 @@
   <div id="app">
     <div>
       <h1>Vue Photo Gallery</h1>
-      <h6>Search for Photos</h6>
+      <h6>Search for Photos: </h6>
+      <form class="form-group fg--search">
+        <input type="text" class="input" placeholder="search">
+        <button type="submit"><font-awesome-icon icon="search" /></button>
+    </form>
     </div>
     <div class="container">
       <div class="button-wrapper">
         <button class="btn" @click="searchUnsplash('Autumn')">Autumn</button>
+
+        <button class="btn" @click="searchUnsplash('Winter')">Winter</button>
+
+        <button class="btn" @click="searchUnsplash('Spring')">Spring</button>
+
+        <button class="btn" @click="searchUnsplash('Summer')">Summer</button>
       </div>
       <stack
               :column-min-width="300"
@@ -100,6 +110,29 @@ img {
 
 .btn:not(:last-child) {
   margin-right: 10px;
+}
+
+
+h6 {
+  display: inline;
+}
+
+.fg--search input {
+  display: inline;
+  width: 25%;
+  padding: 6px;
+  margin: 10px;
+}
+
+.fg--search button {
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  z-index: 2;
+}
+
+.fg--search input:focus + button .fa-search {
+  color: darkgrey;
 }
 
 </style>
