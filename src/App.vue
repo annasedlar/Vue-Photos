@@ -3,8 +3,8 @@
     <div>
       <h1>Vue Photo Gallery</h1>
       <h6>Search for Photos: </h6>
-      <form class="form-group fg--search">
-        <input type="text" class="input" placeholder="search">
+      <form class="form-group fg--search" @submit.prevent="searchUnsplash(searchKeyword)">
+        <input type="text" class="input" placeholder="search" v-model="searchKeyword">
         <button type="submit"><font-awesome-icon icon="search" /></button>
     </form>
     </div>
@@ -48,15 +48,17 @@ export default {
   },
 
   data: () => ({
-    images: []
+    images: [],
+    searchKeyword: ''
   }),
 
   methods: {
     searchUnsplash(topic) {
+      this.searchKeyword = topic;
       this.images = [];
       axios
         .get(
-          `https://api.unsplash.com/search/photos?query=${topic}&per_page=20`,
+          `https://api.unsplash.com/search/photos?query=${this.searchKeyword}&per_page=20`,
           {
             headers: {
               Authorization:
