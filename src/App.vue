@@ -33,6 +33,7 @@
         </stack-item>
       </stack>
     </div>
+    <button v-if="showLoadMoreButton" @click="loadMore" class="load-more-btn">Load More</button>
   </div>
 </template>
 
@@ -49,7 +50,8 @@ export default {
 
   data: () => ({
     images: [],
-    searchKeyword: ''
+    searchKeyword: '',
+    showLoadMoreButton: false
   }),
 
   methods: {
@@ -69,11 +71,38 @@ export default {
         )
         .then(response => {
           this.images = response.data.results;
+          this.showLoadMoreButton = true;
         })
         .catch(() => {
           this.images = [];
+          this.showLoadMoreButton = false;
+        });
+    },
+    
+    loadMore() {
+      let imageCount = this.images.length;
+      let addMore = imageCount + 20;
+      axios
+        .get(
+          `https://api.unsplash.com/search/photos?query=${this.searchKeyword}&per_page=${addMore}`,
+          {
+            headers: {
+              Authorization:
+                `Client-ID ${process.env.VUE_APP_UNSPLASHED_KEY}`,
+              "Accept-Version": "v1"
+            }
+          }
+        )
+        .then(response => {
+          this.images = response.data.results;
+          this.showLoadMoreButton = false;
+        })
+        .catch(() => {
+          this.images = [];
+          this.showLoadMoreButton = false;
         });
     }
+
   }
 };
 </script>
@@ -103,9 +132,17 @@ img {
   justify-content: center;
   margin-bottom: 25px;
 }
+
 .btn {
   font-size: 18px;
   background-color: #42b983;
+  color: white;
+  padding: 10px 20px;
+}
+
+.load-more-btn {
+  font-size: 18px;
+  background-color: lightblue;
   color: white;
   padding: 10px 20px;
 }
