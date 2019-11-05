@@ -47,6 +47,10 @@ export default {
     Stack,
     StackItem
   },
+  created () {
+    // fetch the inital images
+    this.searchUnsplash(stars);
+  },
 
   data: () => ({
     images: [],
