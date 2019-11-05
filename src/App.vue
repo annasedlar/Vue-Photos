@@ -49,7 +49,7 @@ export default {
   },
   created () {
     // fetch the inital images
-    this.searchUnsplash(stars);
+    this.searchUnsplash('stars');
   },
 
   data: () => ({
@@ -76,6 +76,7 @@ export default {
         .then(response => {
           this.images = response.data.results;
           this.showLoadMoreButton = true;
+          this.searchKeyword='';
         })
         .catch(() => {
           this.images = [];
