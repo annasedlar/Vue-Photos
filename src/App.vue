@@ -3,20 +3,20 @@
     <div>
       <h1>Vue Photo Gallery</h1>
       <h6>Search for Photos: </h6>
-      <form class="form-group fg--search" @submit.prevent="searchUnsplash(searchKeyword)">
+      <form class="form-group fg--search" @submit.prevent="searchUnsplash(searchKeyword, 20)">
         <input type="text" class="input" placeholder="search" v-model="searchKeyword">
         <button type="submit"><font-awesome-icon icon="search" /></button>
     </form>
     </div>
     <div class="container">
       <div class="button-wrapper">
-        <button class="btn" @click="searchUnsplash('Autumn')">Autumn</button>
+        <button class="btn" @click="searchUnsplash('Autumn', 20)">Autumn</button>
 
-        <button class="btn" @click="searchUnsplash('Winter')">Winter</button>
+        <button class="btn" @click="searchUnsplash('Winter', 20)">Winter</button>
 
-        <button class="btn" @click="searchUnsplash('Spring')">Spring</button>
+        <button class="btn" @click="searchUnsplash('Spring', 20)">Spring</button>
 
-        <button class="btn" @click="searchUnsplash('Summer')">Summer</button>
+        <button class="btn" @click="searchUnsplash('Summer', 20)">Summer</button>
       </div>
       <stack
               :column-min-width="300"
@@ -49,22 +49,23 @@ export default {
   },
   created () {
     // fetch the inital images
-    this.searchUnsplash('stars');
+    this.searchUnsplash('stars', 20);
   },
 
   data: () => ({
     images: [],
     searchKeyword: '',
-    showLoadMoreButton: false
+    showLoadMoreButton: false,
+    previousSearchWord: ''
   }),
 
   methods: {
-    searchUnsplash(topic) {
+    searchUnsplash(topic, number) {
       this.searchKeyword = topic;
       this.images = [];
       axios
         .get(
-          `https://api.unsplash.com/search/photos?query=${this.searchKeyword}&per_page=20`,
+          `https://api.unsplash.com/search/photos?query=${this.searchKeyword}&per_page=${number}`,
           {
             headers: {
               Authorization:
@@ -76,6 +77,7 @@ export default {
         .then(response => {
           this.images = response.data.results;
           this.showLoadMoreButton = true;
+          this.previousSearchWord=this.searchKeyword;
           this.searchKeyword='';
         })
         .catch(() => {
@@ -86,10 +88,11 @@ export default {
     
     loadMore() {
       let imageCount = this.images.length;
-      let addMore = imageCount + 20;
+      console.log(this.searchKeyword)
+      console.log(imageCount + 10)
       axios
         .get(
-          `https://api.unsplash.com/search/photos?query=${this.searchKeyword}&per_page=${addMore}`,
+          `https://api.unsplash.com/search/photos?query=${this.searchKeyword}&per_page=${imageCount + 10}`,
           {
             headers: {
               Authorization:
@@ -99,10 +102,12 @@ export default {
           }
         )
         .then(response => {
-          this.images = response.data.results;
+          console.log(response)
+          this.images.push(response.data.results);
           this.showLoadMoreButton = false;
         })
-        .catch(() => {
+        .catch(e => {
+          console.log(e)
           this.images = [];
           this.showLoadMoreButton = false;
         });
